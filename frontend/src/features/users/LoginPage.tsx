@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { LoginMutation} from '../../types';
+import { LoginMutation } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
 import { login } from "./UserThunk.ts";
 import { selectLoginError, selectLoginLoading } from "./UserSlice.ts";

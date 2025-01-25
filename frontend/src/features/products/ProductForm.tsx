@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import FileInput from "./FileInput.tsx";
-import { IProductMutation } from '../../types';
+import { IProductMutation } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
 import { selectUser } from "../users/UserSlice.ts";
 import { useNavigate } from "react-router-dom";
 import ButtonLoading from "../../components/UI/ButtonLoading/ButtonLoading.tsx";
-import { selectCategoriesItems } from '../categories/categoriesSlice.ts';
-import { selectCreateLoading } from './productsSlice.ts';
-import { createProduct } from './productsThunk.ts';
+import { selectCategoriesItems } from "../categories/categoriesSlice.ts";
+import { selectCreateLoading } from "./productsSlice.ts";
+import { createProduct } from "./productsThunk.ts";
+import { toast } from "react-toastify";
+import { fetchCategories } from "../categories/categoriesThunk.ts";
 
 const initialState = {
   title: "",
   description: "",
   image: null,
-  price:0,
-  category: '',
+  price: 0,
+  category: "",
 };
-
 
 const PoroductForm = () => {
   const [form, setForm] = useState<IProductMutation>({ ...initialState });
@@ -25,43 +26,58 @@ const PoroductForm = () => {
   const navigate = useNavigate();
   // const creatingError = useAppSelector(selectCreatingError);
   const isCreating = useAppSelector(selectCreateLoading);
-  const category = useAppSelector(selectCategoriesItems)
+  const category = useAppSelector(selectCategoriesItems);
 
+  useEffect(() => {
+    dispatch(fetchCategories());
+  }, [dispatch]);
   useEffect(() => {
     if (!user) navigate("/register");
   }, [navigate, user]);
 
   const onFormSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log(user?.token);
 
     try {
-      console.log(form);
-      await dispatch(createProduct( { productMutation: form })).unwrap();
-      setForm({ ...initialState });
-      navigate("/");
+      if (
+        form.title.trim().length === 0 ||
+        form.description.trim().length === 0 ||
+        !form.image
+      ) {
+        toast.error("Please fill all fields");
+      } else if (form.price < 0) {
+        toast.error("Price cannot be a negative number");
+      } else if (typeof form.price === "number") {
+        toast.error(" Prise must be number");
+      } else {
+        await dispatch(createProduct({ productMutation: form })).unwrap();
+        setForm({ ...initialState });
+        navigate("/");
+      }
     } catch (e) {
       console.error(e);
     }
   };
 
   const onInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
   ) => {
     const { name, value } = e.target;
     setForm((prevState: IProductMutation) => ({ ...prevState, [name]: value }));
   };
 
-  const onInputSelectChange = (
-    e: React.ChangeEvent<  HTMLSelectElement>,
-  ) => {
+  const onInputSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
     let categoryID: string;
-    category.map(c=>{
-     if(c.title === value) categoryID = c._id
-       ;
-   })
-    setForm((prevState: IProductMutation) => ({ ...prevState, [name]: categoryID }));
+    category.map((c) => {
+      if (c.title === value) categoryID = c._id;
+    });
+    setForm((prevState: IProductMutation) => ({
+      ...prevState,
+      [name]: categoryID,
+    }));
   };
 
   const onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void = (
@@ -76,15 +92,6 @@ const PoroductForm = () => {
       }));
     }
   };
-  console.log(form);
-
-  // const getFieldError = (fieldName: string) => {
-  //   try {
-  //     return creatingError?.errors[fieldName].message;
-  //   } catch {
-  //     return undefined;
-  //   }
-  // };
 
   return (
     <>
@@ -96,8 +103,6 @@ const PoroductForm = () => {
 
         <form onSubmit={onFormSubmit}>
           <div className="form-group mb-3">
-
-
             {category.length > 0 ? (
               <select
                 required
@@ -118,7 +123,7 @@ const PoroductForm = () => {
               </select>
             ) : null}
             <label htmlFor="category" className="form-label">
-              {' '}
+              {" "}
               Category
             </label>
           </div>
@@ -133,10 +138,6 @@ const PoroductForm = () => {
               // ${getFieldError("title") ? "is-invalid" : ""}`}
             />
             <label htmlFor="title">Title</label>
-            {/*{getFieldError("title") && (*/}
-            {/*  <div className="invalid-feedback">{getFieldError("title")}*/}
-            {/*  </div>*/}
-            {/*)}*/}
           </div>
 
           <div className="mb-3">
@@ -146,32 +147,20 @@ const PoroductForm = () => {
               value={form.description}
               onChange={onInputChange}
               className={`form-control `}
-              // ${getFieldError("description") ? "is-invalid" : ""}`}
             />
             <label htmlFor="description">Description</label>
-            {/*{getFieldError("description") && (*/}
-            {/*  <div className="invalid-feedback">*/}
-            {/*    {getFieldError("description")}*/}
-            {/*  </div>*/}
-            {/*)}*/}
           </div>
           <div className="mb-3">
             <input
-              type={'number'}
+              type={"number"}
               min={0}
               name="price"
               id="price"
               value={form.price}
               onChange={onInputChange}
               className={`form-control`}
-              // ${getFieldError("description") ? "is-invalid" : ""}`}
             />
             <label htmlFor="description">Price</label>
-            {/*{getFieldError("description") && (*/}
-            {/*  <div className="invalid-feedback">*/}
-            {/*    {getFieldError("description")}*/}
-            {/*  </div>*/}
-            {/*)}*/}
           </div>
 
           <div className="mb-3">
@@ -182,12 +171,7 @@ const PoroductForm = () => {
               onGetFile={onFileChange}
               file={form.image}
               className={`form-control`}
-              // ${getFieldError("image") ? "is-invalid" : ""}`}
             />
-
-            {/*{getFieldError("image") && (*/}
-            {/*  <div className="invalid-feedback">{getFieldError("image")}</div>*/}
-            {/*)}*/}
           </div>
 
           <div className="d-flex gap-3 justify-content-center mb-3">
@@ -203,4 +187,4 @@ const PoroductForm = () => {
   );
 };
 
-export default  PoroductForm;
+export default PoroductForm;

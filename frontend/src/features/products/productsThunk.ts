@@ -1,9 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosApi from "../../axiosApi.ts";
-import { IProductMutation, OneProduct, Product, ValidationError } from '../../types';
-import { apiUrl } from '../../globalConstants.ts';
-import { RootState } from '../../app/store.ts';
-import { isAxiosError } from 'axios';
+import { IProductMutation, OneProduct, Product } from "../../types";
+import { apiUrl } from "../../globalConstants.ts";
+import { RootState } from "../../app/store.ts";
 
 export const fetchProducts = createAsyncThunk<Product[], void>(
   "products/fetchProducts",
@@ -16,7 +15,9 @@ export const fetchProducts = createAsyncThunk<Product[], void>(
 export const fetchProductsOnCategory = createAsyncThunk<Product[], string>(
   "products/fetchProductsOnCategory",
   async (id) => {
-    const productsResponse = await axiosApi<Product[]>("/products?category_id=" + id);
+    const productsResponse = await axiosApi<Product[]>(
+      "/products?category_id=" + id,
+    );
     return productsResponse.data || [];
   },
 );
@@ -29,29 +30,28 @@ export const getProduct = createAsyncThunk<OneProduct, string>(
   },
 );
 
-export const deleteProduct = createAsyncThunk<void, {productId:string,token:string
-}>(
-  "products/deleteProduct",
-  async ({productId, token}) => {
-    return axiosApi.delete(`${apiUrl}/products/${productId}`,
-      {headers: { Authorization: `${token}`}});
-  },
-);
-
+export const deleteProduct = createAsyncThunk<
+  void,
+  { productId: string; token: string }
+>("products/deleteProduct", async ({ productId, token }) => {
+  return axiosApi.delete(`${apiUrl}/products/${productId}`, {
+    headers: { Authorization: `${token}` },
+  });
+});
 
 export const createProduct = createAsyncThunk<
   Product,
   { productMutation: IProductMutation },
-  { state: RootState; rejectValue: ValidationError }
->("products/createProduct", async ({ productMutation }, { getState, rejectWithValue }) => {
+  { state: RootState }
+>("products/createProduct", async ({ productMutation }, { getState }) => {
   const token = getState().users.user?.token;
 
   try {
     const formData = new FormData();
-    const keys = Object.keys(productMutation) as (keyof  IProductMutation)[];
+    const keys = Object.keys(productMutation) as (keyof IProductMutation)[];
 
     keys.forEach((key) => {
-      const value  = productMutation[key];
+      const value = productMutation[key];
 
       if (value !== null) {
         formData.append(key, value as string | File);
@@ -63,13 +63,6 @@ export const createProduct = createAsyncThunk<
     });
     return response.data;
   } catch (error) {
-    if (
-      isAxiosError(error) &&
-      error.response &&
-      error.response.status === 400
-    ) {
-      return rejectWithValue(error.response.data as ValidationError);
-    }
     throw error;
   }
 });

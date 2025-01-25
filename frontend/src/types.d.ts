@@ -49,20 +49,20 @@ export interface Product {
   image: string;
 }
 
-export interface  OneProduct {
-  _id: string,
+export interface OneProduct {
+  _id: string;
   user: {
-    username: string,
-    displayName: string,
-    phoneNumber: string,
-  },
+    username: string;
+    displayName: string;
+    phoneNumber: string;
+  };
   category: {
-    "title": string
-  },
-  title: string,
-  description: string
-  image: string,
-  price: number,
+    title: string;
+  };
+  title: string;
+  description: string;
+  image: string;
+  price: number;
 }
 
 export interface IProductMutation {
@@ -79,4 +79,3 @@ export interface IProductMutation {
 //   post: IPost;
 //   text: string;
 // }
-

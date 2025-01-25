@@ -12,8 +12,8 @@ const Register = () => {
   const [form, setForm] = useState<RegisterMutation>({
     username: "",
     password: "",
-    displayName:'',
-    phoneNumber:''
+    displayName: "",
+    phoneNumber: "",
   });
   const dispatch = useAppDispatch();
   const error = useAppSelector(selectRegisterError);
@@ -142,7 +142,10 @@ const Register = () => {
                               value={form.displayName}
                               name="displayName"
                             />
-                            <label className="form-label" htmlFor={"displayName"}>
+                            <label
+                              className="form-label"
+                              htmlFor={"displayName"}
+                            >
                               Your salesman name
                             </label>
                           </div>
@@ -170,7 +173,10 @@ const Register = () => {
                               value={form.phoneNumber}
                               name="phoneNumber"
                             />
-                            <label className="form-label" htmlFor={"phoneNumber"}>
+                            <label
+                              className="form-label"
+                              htmlFor={"phoneNumber"}
+                            >
                               Phone number
                             </label>
                           </div>

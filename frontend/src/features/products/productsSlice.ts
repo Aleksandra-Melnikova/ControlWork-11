@@ -1,6 +1,12 @@
-import { OneProduct, Product } from '../../types';
+import { OneProduct, Product } from "../../types";
 import { createSlice } from "@reduxjs/toolkit";
-import { createProduct, deleteProduct, fetchProducts, fetchProductsOnCategory, getProduct } from './productsThunk.ts';
+import {
+  createProduct,
+  deleteProduct,
+  fetchProducts,
+  fetchProductsOnCategory,
+  getProduct,
+} from "./productsThunk.ts";
 import { RootState } from "../../app/store.ts";
 
 interface IProductsState {
@@ -8,8 +14,8 @@ interface IProductsState {
   fetchLoading: boolean;
   createLoading: boolean;
   oneProduct: OneProduct | null;
-  fetchOneLoading:boolean;
-  deleteLoading:boolean;
+  fetchOneLoading: boolean;
+  deleteLoading: boolean;
 }
 
 const initialState: IProductsState = {
@@ -21,12 +27,13 @@ const initialState: IProductsState = {
   deleteLoading: false,
 };
 
-export const selectProductsItems = (state: RootState) => state.products.products;
+export const selectProductsItems = (state: RootState) =>
+  state.products.products;
 export const selectFetchLoading = (state: RootState) =>
   state.products.fetchLoading;
 export const selectCreateLoading = (state: RootState) =>
   state.products.createLoading;
-export const selectOneProduct= (state: RootState) => state.products.oneProduct;
+export const selectOneProduct = (state: RootState) => state.products.oneProduct;
 export const selectFetchOneLoading = (state: RootState) =>
   state.products.fetchOneLoading;
 export const selectDeleteLoading = (state: RootState) =>
@@ -51,10 +58,13 @@ export const productsSlice = createSlice({
       .addCase(fetchProductsOnCategory.pending, (state) => {
         state.fetchLoading = true;
       })
-      .addCase(fetchProductsOnCategory.fulfilled, (state, { payload: products }) => {
-        state.fetchLoading = false;
-        state.products = products;
-      })
+      .addCase(
+        fetchProductsOnCategory.fulfilled,
+        (state, { payload: products }) => {
+          state.fetchLoading = false;
+          state.products = products;
+        },
+      )
       .addCase(fetchProductsOnCategory.rejected, (state) => {
         state.fetchLoading = false;
       })
@@ -69,7 +79,7 @@ export const productsSlice = createSlice({
         state.fetchOneLoading = false;
       })
       .addCase(deleteProduct.pending, (state) => {
-        state.deleteLoading= true;
+        state.deleteLoading = true;
       })
       .addCase(deleteProduct.fulfilled, (state) => {
         state.deleteLoading = false;

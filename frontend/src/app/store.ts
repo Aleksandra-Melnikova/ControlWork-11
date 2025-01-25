@@ -12,8 +12,8 @@ import {
   REHYDRATE,
 } from "redux-persist";
 
-import { categoriesReducer } from '../features/categories/categoriesSlice.ts';
-import { productsReducer } from '../features/products/productsSlice.ts';
+import { categoriesReducer } from "../features/categories/categoriesSlice.ts";
+import { productsReducer } from "../features/products/productsSlice.ts";
 
 const usersPersistConfig = {
   key: "store:users",

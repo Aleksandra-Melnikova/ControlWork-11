@@ -13,12 +13,7 @@ const  ProductSchema = new mongoose.Schema({
     },
     title: {
         type: String,
-        validate: {
-            validator: async function (value: string): Promise<boolean> {
-                return value.trim().length > 0;
-            },
-            message: "Fill this field",
-        },
+       required: [true, 'Title is required'],
     },
     description: {
         type:String,
@@ -26,7 +21,7 @@ const  ProductSchema = new mongoose.Schema({
     },
     image: {
         type:String,
-        required: [true, 'Description is required'],
+        required: [true, 'Image is required'],
     },
 
     price: {

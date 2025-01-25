@@ -64,7 +64,7 @@ const FileInput: React.FC<Props> = ({
           className="btn btn-primary fs-6 d-inline-flex justify-content-center"
           onClick={activateInput}
         >
-         Browse
+          Browse
         </button>
       </div>
     </>

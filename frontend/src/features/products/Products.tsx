@@ -1,14 +1,11 @@
-
-
 import { useEffect } from "react";
-import { useAppDispatch, useAppSelector } from '../../app/hooks.ts';
-import Loader from '../../components/UI/Loader/Loader.tsx';
-import ProductItem from './Product.tsx';
-import { fetchProducts, fetchProductsOnCategory } from './productsThunk.ts';
-import { selectFetchLoading, selectProductsItems } from './productsSlice.ts';
-import { selectCategoriesItems } from '../categories/categoriesSlice.ts';
-import { fetchCategories } from '../categories/categoriesThunk.ts';
-
+import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
+import Loader from "../../components/UI/Loader/Loader.tsx";
+import ProductItem from "./Product.tsx";
+import { fetchProducts, fetchProductsOnCategory } from "./productsThunk.ts";
+import { selectFetchLoading, selectProductsItems } from "./productsSlice.ts";
+import { selectCategoriesItems } from "../categories/categoriesSlice.ts";
+import { fetchCategories } from "../categories/categoriesThunk.ts";
 
 const Products = () => {
   const dispatch = useAppDispatch();
@@ -16,7 +13,7 @@ const Products = () => {
   const isFetchProductsLoading = useAppSelector(selectFetchLoading);
   const categories = useAppSelector(selectCategoriesItems);
 
-  const fetchAllProducts =  () => {
+  const fetchAllProducts = () => {
     dispatch(fetchProducts());
   };
   useEffect(() => {
@@ -26,11 +23,9 @@ const Products = () => {
     void fetchAllProducts();
   }, [dispatch]);
 
-  const fetchProductsOnId = async (id:string)=>{
+  const fetchProductsOnId = async (id: string) => {
     await dispatch(fetchProductsOnCategory(id));
   };
-
-
 
   return (
     <>
@@ -50,7 +45,7 @@ const Products = () => {
                 <li key={item._id} className="nav-item">
                   <a
                     className="nav-link"
-                    onClick={()=>fetchProductsOnId(item._id)}
+                    onClick={() => fetchProductsOnId(item._id)}
                   >
                     {item.title}
                   </a>
@@ -62,14 +57,26 @@ const Products = () => {
         <div className="col-9">
           <>
             {isFetchProductsLoading ? (
-              <Loader/>
+              <Loader />
             ) : (
               <div className="d-flex flex-row gap-5 flex-wrap align-items-center mt-5">
                 <>
-                  {products.length > 0 ? <>{products.map((product) => (
-                    <ProductItem price={product.price} title={product.title} image={product.image} key={product._id}
-                                 id={product._id}/>
-                  ))})</> : <p> No products</p>}
+                  {products.length > 0 ? (
+                    <>
+                      {products.map((product) => (
+                        <ProductItem
+                          price={product.price}
+                          title={product.title}
+                          image={product.image}
+                          key={product._id}
+                          id={product._id}
+                        />
+                      ))}
+                      )
+                    </>
+                  ) : (
+                    <p> No products</p>
+                  )}
                 </>
               </div>
             )}
