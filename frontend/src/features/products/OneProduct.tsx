@@ -1,23 +1,38 @@
 
 import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from 'react-router-dom';
 import { apiUrl } from "../../globalConstants.ts";
 import Loader from "../../components/UI/Loader/Loader.tsx";
-import { getProduct } from './productsThunk.ts';
-import { selectFetchOneLoading, selectOneProduct } from './productsSlice.ts';
+import { deleteProduct, getProduct } from './productsThunk.ts';
+import { selectDeleteLoading, selectFetchOneLoading, selectOneProduct } from './productsSlice.ts';
+import { selectUser } from '../users/UserSlice.ts';
+import ButtonLoading from '../../components/UI/ButtonLoading/ButtonLoading.tsx';
 
 const OneProduct = () => {;
   const dispatch = useAppDispatch();
   const params = useParams();
   const isLoading = useAppSelector(selectFetchOneLoading)
   const product = useAppSelector(selectOneProduct);
+  const user = useAppSelector(selectUser);
+  const navigate = useNavigate();
+  const isDeleteLoading = useAppSelector(selectDeleteLoading);
 
   useEffect(() => {
     if (params.productsId ) {
       dispatch(getProduct(params.productsId));
     }
   }, [dispatch, params.productsId]);
+  const onDeleteProduct = async (id:string) => {
+    try{
+      if(user)
+      await dispatch(deleteProduct({productId:id, token:user?.token}));
+      navigate("/products");
+    }
+    catch (e){
+      console.error(e);
+    }
+  }
 
   return (
     product && (
@@ -61,6 +76,7 @@ const OneProduct = () => {;
                       <hr/>
                       <p>Name: {product.user.displayName}</p>
                       <p> Phone: {product.user.phoneNumber}</p>
+                      {user?.username === product.user.username?<ButtonLoading isLoading={isDeleteLoading} isDisabled={isDeleteLoading} text={"delete"} type="button" onClick={()=>onDeleteProduct(product?._id)} />: null}
                     </div>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axiosApi from "../../axiosApi.ts";
 import { OneProduct, Product } from '../../types';
+import { apiUrl } from '../../globalConstants.ts';
 
 export const fetchProducts = createAsyncThunk<Product[], void>(
   "products/fetchProducts",
@@ -23,6 +24,15 @@ export const getProduct = createAsyncThunk<OneProduct, string>(
   async (productId) => {
     const response = await axiosApi.get<OneProduct>(`/products/${productId}`);
     return response.data;
+  },
+);
+
+export const deleteProduct = createAsyncThunk<void, {productId:string,token:string
+}>(
+  "products/deleteProduct",
+  async ({productId, token}) => {
+    return axiosApi.delete(`${apiUrl}/products/${productId}`,
+      {headers: { Authorization: `${token}`}});
   },
 );
 
