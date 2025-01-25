@@ -10,13 +10,13 @@ interface Props {
 
 const ProductItem: React.FC<Props> = ({ title, price, id, image }) => {
   return (
-    <div className="card " style={{ width: "300px", minHeight: "300px" }}>
+    <div className="card " style={{ width: "230px", minHeight: "300px" }}>
       <div
-        className="w-100 h-50 d-flex align-items-center "
-        style={{ width: "300px", minHeight: "150px", overflow: "hidden" }}
+        className="w-100 h-50 d-flex align-items-center rounded-2  "
+        style={{ width: "250px", minHeight: "150px", overflow: "hidden" }}
       >
         <img
-          className="card-img-top"
+          className="card-img-top mx-auto rounded-2"
           style={{ width: "auto", height: "150px" }}
           src={`${apiUrl}/${image}`}
           alt={title}

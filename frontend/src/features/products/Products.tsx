@@ -16,9 +16,11 @@ const Products = () => {
   const fetchAllProducts = () => {
     dispatch(fetchProducts());
   };
+
   useEffect(() => {
     dispatch(fetchCategories());
   }, [dispatch]);
+
   useEffect(() => {
     void fetchAllProducts();
   }, [dispatch]);

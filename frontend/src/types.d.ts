@@ -72,10 +72,3 @@ export interface IProductMutation {
   price: number;
   category: string;
 }
-//
-// export interface IComment {
-//   _id: string;
-//   user: User;
-//   post: IPost;
-//   text: string;
-// }

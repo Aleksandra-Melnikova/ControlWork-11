@@ -3,8 +3,6 @@ import { LoginMutation } from "../../types";
 import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
 import { login } from "./UserThunk.ts";
 import { selectLoginError, selectLoginLoading } from "./UserSlice.ts";
-
-//
 import { NavLink } from "react-router-dom";
 import { useState } from "react";
 import ButtonLoading from "../../components/UI/ButtonLoading/ButtonLoading.tsx";

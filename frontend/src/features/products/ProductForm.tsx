@@ -24,7 +24,6 @@ const PoroductForm = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector(selectUser);
   const navigate = useNavigate();
-  // const creatingError = useAppSelector(selectCreatingError);
   const isCreating = useAppSelector(selectCreateLoading);
   const category = useAppSelector(selectCategoriesItems);
 
@@ -135,7 +134,6 @@ const PoroductForm = () => {
               value={form.title}
               onChange={onInputChange}
               className={`form-control `}
-              // ${getFieldError("title") ? "is-invalid" : ""}`}
             />
             <label htmlFor="title">Title</label>
           </div>
