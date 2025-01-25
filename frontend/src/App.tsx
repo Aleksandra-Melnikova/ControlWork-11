@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import RegisterPage from './features/users/RegisterPage.tsx';
 import LoginPage from './features/users/LoginPage.tsx';
 import Products from './features/products/Products.tsx';
+import OneProduct from './features/products/OneProduct.tsx';
 
 
 const App = () => {
@@ -15,7 +16,7 @@ const App = () => {
           <Route path="/" element={<Products />} />
           <Route path="/products" element={<Products />} />
           {/*<Route path="/add_products" element={<ProductsForm />} />*/}
-          {/*<Route path="/products/:productsId" element={<DetailedProducts />} />*/}
+          <Route path="/products/:productsId" element={<OneProduct/>} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route

@@ -48,6 +48,22 @@ export interface Product {
   price: number;
   image: string;
 }
+
+export interface  OneProduct {
+  _id: string,
+  user: {
+    username: string,
+    displayName: string,
+    phoneNumber: string,
+  },
+  category: {
+    "title": string
+  },
+  title: string,
+  description: string
+  image: string,
+  price: number,
+}
 // export interface IPost {
 //   post: {
 //     _id: string;

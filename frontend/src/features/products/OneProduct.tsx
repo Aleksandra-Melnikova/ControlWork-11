@@ -1,49 +1,46 @@
-import { selectFetching, selectOnePost } from "./PostSlice.ts";
+
 import { useAppDispatch, useAppSelector } from "../../app/hooks.ts";
 import { useEffect } from "react";
-import { getPost } from "./PostThunk.ts";
-import dayjs from "dayjs";
 import { useParams } from "react-router-dom";
 import { apiUrl } from "../../globalConstants.ts";
-import CommentsForm from "../categories/CommentsForm.tsx";
-import Comments from "../categories/Comments.tsx";
-import { getAllCommentsByPost } from "../categories/CommentThunk.ts";
 import Loader from "../../components/UI/Loader/Loader.tsx";
+import { getProduct } from './productsThunk.ts';
+import { selectFetchOneLoading, selectOneProduct } from './productsSlice.ts';
 
-const OneProduct = () => {
-  const post = useAppSelector(selectOnePost);
+const OneProduct = () => {;
   const dispatch = useAppDispatch();
-  const { postId } = useParams();
-  const isLoading = useAppSelector(selectFetching);
+  const params = useParams();
+  const isLoading = useAppSelector(selectFetchOneLoading)
+  const product = useAppSelector(selectOneProduct);
 
   useEffect(() => {
-    if (postId) {
-      dispatch(getPost(postId));
-      dispatch(getAllCommentsByPost(postId));
+    if (params.productsId ) {
+      dispatch(getProduct(params.productsId));
     }
-  }, [dispatch, postId]);
+  }, [dispatch, params.productsId]);
 
   return (
-    post && (
+    product && (
       <>
         {isLoading ? (
           <Loader />
         ) : (
+
+<>
           <div className="container mt-5 ">
             <div className="my-5 shadow rounded">
               <div className=" shadow-sm  p-3 rounded border-0">
                 <div className="d-flex flex-column">
-                  <h3>{post.user.username}</h3>
-                  <hr />
-                  <h5 className=" fw-semibold fs-4 my-2">{post.title}</h5>
-                  <div className={"row d-flex mt-2"}>
-                    <div className="col-lg-6 col-xl-6 col-md-6 col-sm-12 d-flex align-items-center justify-content-center text-primary">
-                      {post.image ? (
+                  <h5 className=" fw-semibold fs-4 my-2">{product.title}</h5>
+                  <div className={'row d-flex mt-2'}>
+                    <div
+                      className="col-lg-6 col-xl-6 col-md-6 col-sm-12 d-flex align-items-center justify-content-center text-primary">
+                      {product.image ? (
                         <img
                           src={
-                            post.image ? `${apiUrl}/${post.image}` : undefined
+                            product.image ? `${apiUrl}/${product.image}` : undefined
                           }
-                          alt={post.title}
+                          alt={product.title}
                           className="w-100 h-auto mb-3 rounded"
                         />
                       ) : (
@@ -52,25 +49,24 @@ const OneProduct = () => {
                     </div>
                     <div
                       className={
-                        "col-lg-6 col-xl-6 col-md-6 col-sm-12 d-flex flex-column"
+                        'col-lg-6 col-xl-6 col-md-6 col-sm-12 d-flex flex-column'
                       }
                     >
                       <p className=" flex-grow-1">
-                        {post.description ? post.description : null}
+                        {product.description ? product.description : null}
                       </p>
                       <p className="text-muted">
-                        {dayjs(post.datetime).format("DD.MM.YYYY, в HH:mm")}
+                        Price: {product.price} $
                       </p>
+                      <hr/>
+                      <p>Name: {product.user.displayName}</p>
+                      <p> Phone: {product.user.phoneNumber}</p>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
-            <hr />
-            <CommentsForm postId={postId} />
-            <hr />
-            <Comments />
-          </div>
+          </div></>
         )}
       </>
     )

@@ -1,5 +1,5 @@
 
-import {  NavLink } from 'react-router-dom';
+import { Link} from 'react-router-dom';
 import { apiUrl } from '../../globalConstants.ts';
 
 
@@ -22,7 +22,7 @@ const ProductItem: React.FC<Props> = ({ title, price, id, image}) => {
         <div className="card-body">
           <h5 className="card-title">{title}</h5>
           <p className="card-text">{price}</p>
-          <NavLink to={`/products/:${id}`} className="btn btn-primary">Learn more</NavLink>
+          <Link to={`/products/${id}`} className="btn btn-primary">Learn more</Link>
         </div>
     </div>
     );
