@@ -64,36 +64,14 @@ export interface  OneProduct {
   image: string,
   price: number,
 }
-// export interface IPost {
-//   post: {
-//     _id: string;
-//     user: {
-//       username: string;
-//     };
-//     title: string;
-//     description: string;
-//     image: File | null;
-//     datetime: Date;
-//   };
-//   commentNumber: number;
-// }
-//
-// export interface IDetailedPost {
-//   _id: string;
-//   user: {
-//     username: string;
-//   };
-//   title: string;
-//   description: string;
-//   image: File | null;
-//   datetime: Date;
-// }
-//
-// export interface IPostMutation {
-//   title: string;
-//   description: string;
-//   image: File | null;
-// }
+
+export interface IProductMutation {
+  title: string;
+  description: string;
+  image: File | null;
+  price: number;
+  category: string;
+}
 //
 // export interface IComment {
 //   _id: string;

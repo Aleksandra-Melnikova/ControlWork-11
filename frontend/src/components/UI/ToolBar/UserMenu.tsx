@@ -22,7 +22,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ username }) => {
         </p>
         <NavLink
           className={`mb-2 mt-1 d-inline-block nav-link nav-link-tool text-white text-decoration-underline  p-2`}
-          to={"/add-post"}
+          to={"/add_products"}
         >
           Add new product
         </NavLink>

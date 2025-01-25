@@ -1,6 +1,6 @@
 import { OneProduct, Product } from '../../types';
 import { createSlice } from "@reduxjs/toolkit";
-import { deleteProduct, fetchProducts, fetchProductsOnCategory, getProduct } from './productsThunk.ts';
+import { createProduct, deleteProduct, fetchProducts, fetchProductsOnCategory, getProduct } from './productsThunk.ts';
 import { RootState } from "../../app/store.ts";
 
 interface IProductsState {
@@ -78,15 +78,15 @@ export const productsSlice = createSlice({
         state.deleteLoading = false;
       })
 
-      // .addCase(createProduct.pending, (state) => {
-      //   state.createLoading = true;
-      // })
-      // .addCase(createProduct.fulfilled, (state) => {
-      //   state.createLoading = false;
-      // })
-      // .addCase(createProduct.rejected, (state) => {
-      //   state.createLoading = false;
-      // });
+      .addCase(createProduct.pending, (state) => {
+        state.createLoading = true;
+      })
+      .addCase(createProduct.fulfilled, (state) => {
+        state.createLoading = false;
+      })
+      .addCase(createProduct.rejected, (state) => {
+        state.createLoading = false;
+      });
   },
 });
 
