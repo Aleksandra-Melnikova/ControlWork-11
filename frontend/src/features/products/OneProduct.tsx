@@ -5,12 +5,12 @@ import { getPost } from "./PostThunk.ts";
 import dayjs from "dayjs";
 import { useParams } from "react-router-dom";
 import { apiUrl } from "../../globalConstants.ts";
-import CommentsForm from "../comments/CommentsForm.tsx";
-import Comments from "../comments/Comments.tsx";
-import { getAllCommentsByPost } from "../comments/CommentThunk.ts";
+import CommentsForm from "../categories/CommentsForm.tsx";
+import Comments from "../categories/Comments.tsx";
+import { getAllCommentsByPost } from "../categories/CommentThunk.ts";
 import Loader from "../../components/UI/Loader/Loader.tsx";
 
-const DetailedPost = () => {
+const OneProduct = () => {
   const post = useAppSelector(selectOnePost);
   const dispatch = useAppDispatch();
   const { postId } = useParams();
@@ -77,4 +77,4 @@ const DetailedPost = () => {
   );
 };
 
-export default DetailedPost;
+export default OneProduct;

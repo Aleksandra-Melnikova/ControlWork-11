@@ -37,6 +37,17 @@ export interface GlobalError {
   error: string;
 }
 
+export interface Category {
+  _id: string;
+  title: string;
+}
+
+export interface Product {
+  _id: string;
+  title: string;
+  price: number;
+  image: string;
+}
 // export interface IPost {
 //   post: {
 //     _id: string;

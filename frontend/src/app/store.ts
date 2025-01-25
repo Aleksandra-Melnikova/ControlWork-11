@@ -11,8 +11,9 @@ import {
   REGISTER,
   REHYDRATE,
 } from "redux-persist";
-import { postsReducer } from "../features/posts/PostSlice.ts";
-import { commentsReducer } from "../features/comments/CommentSlice.ts";
+
+import { categoriesReducer } from '../features/categories/categoriesSlice.ts';
+import { productsReducer } from '../features/products/productsSlice.ts';
 
 const usersPersistConfig = {
   key: "store:users",
@@ -22,8 +23,8 @@ const usersPersistConfig = {
 
 const rootReducer = combineReducers({
   users: persistReducer(usersPersistConfig, usersReducer),
-  posts: postsReducer,
-  comments: commentsReducer,
+  categories: categoriesReducer,
+  products: productsReducer,
 });
 
 export const store = configureStore({

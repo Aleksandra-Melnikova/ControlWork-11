@@ -10,7 +10,7 @@ import { RootState } from "../../app/store.ts";
 import { isAxiosError } from "axios";
 
 export const fetchPosts = createAsyncThunk<IPost[], void>(
-  "posts/fetchPosts",
+  "products/fetchPosts",
   async () => {
     const response = await axiosApi.get<IPost[]>("/posts");
     return response.data;
@@ -21,7 +21,7 @@ export const addPost = createAsyncThunk<
   IPost,
   { postMutation: IPostMutation },
   { state: RootState; rejectValue: ValidationError }
->("posts/addPost", async ({ postMutation }, { getState, rejectWithValue }) => {
+>("products/addPost", async ({ postMutation }, { getState, rejectWithValue }) => {
   const token = getState().users.user?.token;
 
   try {
@@ -53,7 +53,7 @@ export const addPost = createAsyncThunk<
 });
 
 export const getPost = createAsyncThunk<IDetailedPost, string>(
-  "posts/getPost",
+  "products/getPost",
   async (postId) => {
     const response = await axiosApi.get<IDetailedPost>(`/posts/${postId}`);
     return response.data;

@@ -3,6 +3,7 @@ import Layout from './components/UI/Layout/Layout.tsx';
 import { Route, Routes } from 'react-router-dom';
 import RegisterPage from './features/users/RegisterPage.tsx';
 import LoginPage from './features/users/LoginPage.tsx';
+import Products from './features/products/Products.tsx';
 
 
 const App = () => {
@@ -11,8 +12,8 @@ const App = () => {
     <>
       <Layout>
         <Routes>
-          {/*<Route path="/" element={<Product />} />*/}
-          {/*<Route path="/products" element={<Product />} />*/}
+          <Route path="/" element={<Products />} />
+          <Route path="/products" element={<Products />} />
           {/*<Route path="/add_products" element={<ProductsForm />} />*/}
           {/*<Route path="/products/:productsId" element={<DetailedProducts />} />*/}
           <Route path="/register" element={<RegisterPage />} />
