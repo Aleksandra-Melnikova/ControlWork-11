@@ -4,6 +4,8 @@ import Product from "../models/Product";
 import {Error} from "mongoose";
 import Category from "../models/Category";
 import auth, {RequestWithUser} from "../middleware/auth";
+import User from "../models/User";
+import category from "../models/Category";
 
 const productsRouter = express.Router();
 
@@ -54,7 +56,51 @@ productsRouter.get('/:id', async (req, res, next) => {
 });
 
 
+// productsRouter.post('/', imagesUpload.single('image'), async (req: express.Request, res: express.Response, next) => {
+//     const token = req.get('Authorization');
+//
+//     if (!token) {
+//         res.status(401).send({error: 'No token.'});
+//         return;
+//     }
+//
+//     const user = await User.findOne({token:`${token}`});
+//
+//     if (!user) {
+//         res.status(401).send({error: 'User not found'});
+//         return;
+//     }
+//     if (req.body.category) {
+//         const category = await Category.findById(req.body.category);
+//         console.log(category);
+//         if (!category) res.status(404).send('Not Found category');
+//     }
+//
+//     try {
+//         const product = new Product({
+//             user: user._id,
+//             category:req.body.category ,
+//             title: req.body.title,
+//             description: req.body.description,
+//             image: req.file ? 'images' + req.file.filename : null,
+//             price:req.body.price,
+//         });
+//
+//         await product.validate();
+//         await product.save();
+//
+//         res.send(product);
+//     }  catch (error) {
+//         if (error instanceof Error.ValidationError) {
+//             res.status(400).send(error);
+//             return;
+//         }
+//         next(error);
+//     }
+// });
+
 productsRouter.post('/', imagesUpload.single('image'), async (req: express.Request, res: express.Response, next) => {
+    const {title, description, category, price} = req.body;
     const token = req.get('Authorization');
 
     if (!token) {
@@ -62,31 +108,27 @@ productsRouter.post('/', imagesUpload.single('image'), async (req: express.Reque
         return;
     }
 
-    const user = await Product.findOne({token});
+    const user = await User.findOne({token});
 
     if (!user) {
         res.status(401).send({error: 'Пользователь, соответствующий этому токену, не найден.'});
         return;
     }
-    if (req.body.category) {
-        const category = await Category.findById(req.body.category);
-        if (!category) res.status(404).send('Not Found category');
-    }
 
     try {
-        const product = new Product({
+        const post = new Product({
             user: user._id,
-            category:req.body.category ,
-            title: req.body.title,
-            description: req.body.description,
+            title: title,
+            description: description,
             image: req.file ? 'images' + req.file.filename : null,
-            price:req.body.price,
+            price: price,
+            category: category,
         });
 
-        await product.validate();
-        await product.save();
+        await post.validate();
+        await post.save();
 
-        res.send(product);
+        res.send(post);
     }  catch (error) {
         if (error instanceof Error.ValidationError) {
             res.status(400).send(error);
