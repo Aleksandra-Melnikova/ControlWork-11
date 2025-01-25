@@ -39,10 +39,11 @@ productsRouter.get('/:id', async (req, res, next) => {
 
     if (!req.params.id) {
         res.status(404).send('Not Found');
+        return
     }
 
     try {
-        const product = await Product.findById(id);
+        const product = await Product.findById(id).populate("category", "title -_id").populate("user","username displayName phoneNumber -_id");
 
         if (!product) res.status(404).send('Not Found');
 
