@@ -6,16 +6,34 @@ import { fetchProducts, fetchProductsOnCategory } from "./productsThunk.ts";
 import { selectFetchLoading, selectProductsItems } from "./productsSlice.ts";
 import { selectCategoriesItems } from "../categories/categoriesSlice.ts";
 import { fetchCategories } from "../categories/categoriesThunk.ts";
+import { useNavigate } from 'react-router-dom';
 
 const Products = () => {
   const dispatch = useAppDispatch();
   const products = useAppSelector(selectProductsItems);
   const isFetchProductsLoading = useAppSelector(selectFetchLoading);
   const categories = useAppSelector(selectCategoriesItems);
+  const navigate = useNavigate();
+  const params = new URLSearchParams(window.location.search);
+  const categoryId = params.get('category_id');
+
+  const fetchProductsOnId = async (id: string) => {
+    await dispatch(fetchProductsOnCategory(id));
+    navigate(`/products?category_id=${id}`)
+  };
 
   const fetchAllProducts = () => {
-    dispatch(fetchProducts());
+    if(categoryId){
+      void fetchProductsOnId(categoryId);
+    } else{
+      void fetchAllProductsNew();
+    }
   };
+
+  const fetchAllProductsNew = async () => {
+    dispatch(fetchProducts());
+    navigate("/products");
+  }
 
   useEffect(() => {
     dispatch(fetchCategories());
@@ -25,9 +43,7 @@ const Products = () => {
     void fetchAllProducts();
   }, [dispatch]);
 
-  const fetchProductsOnId = async (id: string) => {
-    await dispatch(fetchProductsOnCategory(id));
-  };
+
 
   return (
     <>
@@ -38,7 +54,7 @@ const Products = () => {
               <li className="nav-item">
                 <a
                   className="nav-link active"
-                  onClick={() => fetchAllProducts()}
+                  onClick={() => fetchAllProductsNew()}
                 >
                   All
                 </a>
